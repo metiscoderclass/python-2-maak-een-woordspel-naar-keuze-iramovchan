@@ -65,7 +65,9 @@ def get_guess(already_guessed):
         print('Guess a letter: ')
         guess = input()
         guess = guess.lower()
-        if len(guess) != 1:
+        if guess == word_to_guess:
+            return guess
+        elif len(guess) != 1:
             print('Please enter a single letter')
         elif guess in already_guessed:
             print('You have already guessed this letter. Choose again.')
@@ -81,15 +83,23 @@ def play_again():
 
 
 print('HANGMAN')
+print('This is hangman game. You have 6 guesses and you need to guess a random word.\nRemember: type only one letter at once or you can try and guess the whole word.')
 missed_letters = ''
 correct_letters = ''
 word_to_guess = random.choice(all_words)
 game_is_done = False
+found_all_letters = False
 
 while True:
     board(missed_letters, correct_letters, word_to_guess)
+
     guess = get_guess(missed_letters + correct_letters)
-    if guess in word_to_guess:
+    if guess == word_to_guess:
+        found_all_letters = True
+        if found_all_letters:
+            print('Yes, you won. The secret word is ' + word_to_guess + '.')
+            game_is_done = True
+    elif guess in word_to_guess:
         correct_letters = correct_letters + guess
         found_all_letters = True
         for i in range(len(word_to_guess)):
@@ -99,6 +109,7 @@ while True:
         if found_all_letters:
             print('Yes, you won. The secret word is ' + word_to_guess + '.')
             game_is_done = True
+
     else:
         missed_letters = missed_letters + guess
         if len(missed_letters) == len(hangman_pic) - 1:
@@ -112,5 +123,6 @@ After ''' + str(len(missed_letters)) + ' missed guesses and ' + str(len(correct_
             correct_letters = ''
             game_is_done = False
             word_to_guess = random.choice(all_words)
+            found_all_letters = False
         else:
             break
