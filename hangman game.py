@@ -4,7 +4,7 @@ from words_for_hangman import all_words
 hangman_pic = ['''
 ----
 |  |
-| 
+|
 |
 |''', '''
 ----
@@ -53,8 +53,9 @@ def board(missed_letters, correct_letters, word_to_guess):
 
     for i in range(len(word_to_guess)):
         if word_to_guess[i] in correct_letters:
-            blanks = blanks[:i] + word_to_guess[i] + blanks[i + 1:]
+            blanks = blanks[:i] + word_to_guess[i] + blanks[i + 1:] #Mooi met slicing
 
+    # Tip: Kijk eens naar list join in Python
     for letter in blanks:
         print(letter, end=' ')
     print()
@@ -63,14 +64,21 @@ def board(missed_letters, correct_letters, word_to_guess):
 def get_guess(already_guessed):
     while True:
         print('Guess a letter: ')
+
+        ## Verderop in je code doe je dit in 1 regel. Kan dat hier niet?
         guess = input()
         guess = guess.lower()
+
+        # Is dit nodig?
         if guess == word_to_guess:
             return guess
+        #
+
         elif len(guess) != 1:
             print('Please enter a single letter')
         elif guess in already_guessed:
             print('You have already guessed this letter. Choose again.')
+        # Tip: er bestaat vast een functie om dit mee te doen
         elif guess not in 'abcdefghijklmnopqrstuvwxyz':
             print('Please enter a LETTER')
         else:
@@ -95,13 +103,15 @@ while True:
 
     guess = get_guess(missed_letters + correct_letters)
     if guess == word_to_guess:
-        found_all_letters = True
-        if found_all_letters:
+        found_all_letters = True ## Is dit nodig?
+        if found_all_letters:    ## Met deze erbij
             print('Yes, you won. The secret word is ' + word_to_guess + '.')
             game_is_done = True
     elif guess in word_to_guess:
-        correct_letters = correct_letters + guess
+        correct_letters = correct_letters + guess # In python kun je dit ook korter schrijven
         found_all_letters = True
+
+        # Verderop in je code gebruik je letter voor letter door een string loopen. KAn dat hier niet?
         for i in range(len(word_to_guess)):
             if word_to_guess[i] not in correct_letters:
                 found_all_letters = False
